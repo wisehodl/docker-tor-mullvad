@@ -1,0 +1,9 @@
+FROM alpine:3.22
+RUN apk add --no-cache tor
+RUN mkdir -p /var/lib/tor/hidden_service && \
+    chown -R tor:tor /var/lib/tor/hidden_service && \
+    chmod 700 /var/lib/tor/hidden_service
+COPY torrc /etc/tor/torrc
+EXPOSE 9050
+USER tor
+CMD ["tor", "-f", "/etc/tor/torrc"]

@@ -1,0 +1,5 @@
+HiddenServiceDir /var/lib/tor/hidden_service/
+HiddenServicePort 80 localhost:8080
+SocksPort 0.0.0.0:9050
+DNSPort 0.0.0.0:5353
+AutomapHostsOnResolve 1

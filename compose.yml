@@ -1,0 +1,47 @@
+services:
+  vpn:
+    image: qmcgaw/gluetun:latest
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    environment:
+      - VPN_SERVICE_PROVIDER=mullvad
+      - VPN_TYPE=wireguard
+      - SERVER_HOSTNAMES=us-dal-wg-401
+    secrets:
+      - wireguard_addresses
+      - wireguard_private_key
+    ports:
+      - 9050:9050
+    restart: always
+
+  tor:
+    build:
+      context: ./tor
+      dockerfile: Dockerfile.tor
+    volumes:
+      - tor_hidden_service:/var/lib/tor/hidden_service
+    network_mode: "service:vpn"
+    depends_on:
+      - vpn
+    restart: always
+
+  web:
+    build:
+      context: ./web
+      dockerfile: Dockerfile.web
+    network_mode: "service:vpn"
+    depends_on:
+      - tor
+      - vpn
+    restart: always
+
+volumes:
+  tor_hidden_service:
+
+secrets:
+  wireguard_addresses:
+    file: ./.secrets/mullvad_address
+  wireguard_private_key:
+    file: ./.secrets/mullvad_private_key
