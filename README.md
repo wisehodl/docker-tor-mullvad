@@ -161,7 +161,7 @@ echo "10.164.97.26/32" > .secrets/mullvad_address
 sensitive credentials. Make sure they:
 
 - Are never committed to version control (`echo .secrets >> .gitignore`)
-- Have restricted file permissions (`chmod 600 -R .secrets`)
+- Have restricted file permissions (`chmod 700 .secrets`)
 - Stored securely and backed up separately.
 
 ### 4. Configure Mullvad Server Selection
@@ -274,8 +274,7 @@ extra spaces or lines around the text
 
 - The hidden services directory within the container MUST NOT be owned by
 `root` AND have restricted permissions (in this configuration, it is owned by
-the `tor` user and the directory has `700` permissions, while each file has
-`600` permissions)
+the `tor` user and the directory has `700` permissions)
 - Make sure you are not running another Tor service on the same machine,
 causing port conflicts
 - If the VPN is not active, the Tor connection will fail.
